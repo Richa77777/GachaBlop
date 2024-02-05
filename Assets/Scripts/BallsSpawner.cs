@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerScore))]
 public class BallsSpawner : MonoBehaviour
 {
     public static BallsSpawner Instance;
@@ -10,6 +12,7 @@ public class BallsSpawner : MonoBehaviour
     [SerializeField] private AudioClip _popSound;
 
     private AudioSource _audioSource;
+    private PlayerScore _playerScore;
 
     public GameObject[] BallsPrefabs => _ballsPrefabs;
 
@@ -25,11 +28,14 @@ public class BallsSpawner : MonoBehaviour
         }
 
         _audioSource = GetComponent<AudioSource>();
+        _playerScore = GetComponent<PlayerScore>();
     }
 
     public void SpawnCombinedBall(Vector3 spawnPos, GameObject identityBallsObject)
     {
         GameObject ballForSpawn = null;
+        bool isLast = false;
+
 
         for (int i = 0; i < _ballsPrefabs.Length; i++)
         {
@@ -41,14 +47,32 @@ public class BallsSpawner : MonoBehaviour
                     break;
                 }
 
+                isLast = true;
             }
         }
 
-        if (ballForSpawn != null)
+        if (ballForSpawn != null || isLast == true)
         {
-            GameObject ball = Instantiate(ballForSpawn, spawnPos, identityBallsObject.transform.rotation);
+            GameObject ball = null;
+            ParticleSystem particles = null;
 
-            ball.GetComponent<IdenticalBallsTouch>().PopParticles.gameObject.SetActive(true);
+            if (isLast == true)
+            {
+                particles = identityBallsObject.GetComponent<IdenticalBallsTouch>().PopParticles;
+                particles.transform.parent = null;
+                particles.gameObject.SetActive(true);
+
+                _playerScore.AddScore(12);
+            }
+            else if (isLast == false)
+            {
+                ball = Instantiate(ballForSpawn, spawnPos, identityBallsObject.transform.rotation);
+                particles = ball.GetComponent<IdenticalBallsTouch>().PopParticles;
+                particles.gameObject.SetActive(true);
+
+                _playerScore.AddScore(Array.IndexOf(_ballsPrefabs, ballForSpawn));
+            }
+
             _audioSource.PlayOneShot(_popSound);
         }
     }

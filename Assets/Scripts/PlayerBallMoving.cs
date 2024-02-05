@@ -1,24 +1,29 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(PlayerBallRandomChoice))]
 public class PlayerBallMoving : MonoBehaviour
 {
     [SerializeField] private GameObject _stick;
+    [SerializeField] private AudioClip _fallSound;
+    [SerializeField] private GameObject _loseZone;
 
     private Rigidbody2D _currentPlayersBall;
     private Collider2D _currentPlayersBallCollider;
 
     private float _minX = -1.5f;
     private float _maxX = 1.5f;
-
     private float _smoothMovingTime = 0.1f;
+    private bool _firstStationary = true;
+
     private Vector2 _touchPosition;
 
-    private bool _firstStationary = true;
 
     private Camera _mainCamera;
     private PlayerBallRandomChoice _randomChoice;
+    private AudioSource _audioSource;
 
     private Coroutine _smoothMovingCor;
 
@@ -26,6 +31,7 @@ public class PlayerBallMoving : MonoBehaviour
     {
         _mainCamera = Camera.main;
         _randomChoice = GetComponent<PlayerBallRandomChoice>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -46,6 +52,14 @@ public class PlayerBallMoving : MonoBehaviour
         }
     }
 
+    private void OnDisable()
+    {
+        if (_currentPlayersBallCollider != null)
+        {
+            _stick.transform.position = new Vector3(_currentPlayersBall.transform.position.x, _currentPlayersBallCollider.bounds.min.y, _currentPlayersBall.transform.position.z);
+        }
+    }
+
     private void MoveObject()
     {
         if (Input.touchCount > 0 && _currentPlayersBall != null)
@@ -63,7 +77,6 @@ public class PlayerBallMoving : MonoBehaviour
                     {
                         _smoothMovingCor = StartCoroutine(SmoothMoving(_currentPlayersBall.gameObject, targetPos, _smoothMovingTime));
                     }
-
                     break;
                 case TouchPhase.Stationary:
                     if (_smoothMovingCor == null && _firstStationary == true)
@@ -80,31 +93,60 @@ public class PlayerBallMoving : MonoBehaviour
                         _smoothMovingCor = null;
                     }
 
-                    _currentPlayersBall.transform.position = new Vector3(Mathf.Clamp(touchPosWorld.x, _minX, _maxX), _currentPlayersBall.transform.position.y, _currentPlayersBall.transform.position.z);
+                    _currentPlayersBall.transform.position = new Vector3(Mathf.Clamp(targetPos.x, _minX, _maxX), _currentPlayersBall.transform.position.y, _currentPlayersBall.transform.position.z);
                     break;
                 case TouchPhase.Ended:
-                    _randomChoice.SpawnPos = targetPos;
+                    if (!IsTouchOverUI(touch))
+                    {
 
-                    _currentPlayersBall.bodyType = RigidbodyType2D.Dynamic;
-                    _currentPlayersBall = null;
-                    _currentPlayersBallCollider = null;
+                        _randomChoice.SpawnPos = targetPos;
+                        _audioSource.PlayOneShot(_fallSound);
 
-                    _stick.SetActive(false);
 
-                    Invoke(nameof(NextBall), 0.5f);
-                    _firstStationary = true;
+                        _currentPlayersBall.bodyType = RigidbodyType2D.Dynamic;
+                        _currentPlayersBallCollider.enabled = true;
+                        _currentPlayersBall = null;
+                        _currentPlayersBallCollider = null;
+
+                        _stick.SetActive(false);
+                        _loseZone.SetActive(false);
+
+                        Invoke(nameof(NextBall), 0.5f);
+
+                        _firstStationary = true;
+
+                    }
+
                     break;
             }
         }
+    }
+
+    private bool IsTouchOverUI(Touch touch)
+    {
+        if (EventSystem.current != null)
+        {
+            PointerEventData eventData = new PointerEventData(EventSystem.current);
+            eventData.position = touch.position;
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(eventData, results);
+
+            return results.Count > 0;
+        }
+
+        return false;
     }
 
     private void NextBall()
     {
         _currentPlayersBall = _randomChoice.NextBall().GetComponent<Rigidbody2D>();
         _currentPlayersBallCollider = _currentPlayersBall.GetComponent<Collider2D>();
-        
+
         _currentPlayersBall.bodyType = RigidbodyType2D.Kinematic;
+        _currentPlayersBallCollider.enabled = false;
         _stick.SetActive(true);
+        _loseZone.SetActive(true);
     }
 
     private IEnumerator SmoothMoving(GameObject obj, Vector2 targetPos, float duration)
