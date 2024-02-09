@@ -1,11 +1,13 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoxShaking : MonoBehaviour
 {
     [SerializeField] private GameObject _box;
     [SerializeField] private GameObject _loseZone;
     [SerializeField] private PlayerBallMoving _ballMoving;
+    [SerializeField] private Button _rewardedButton;
 
     private float _duration = 1.0f;
     private float _magnitude = 0.5f;
@@ -22,8 +24,9 @@ public class BoxShaking : MonoBehaviour
     [ContextMenu("Shake")]
     public void ShakeBox()
     {
+        _rewardedButton.interactable = false;
         StartCoroutine(BoxShakeCor(_duration, _magnitude));
-        ApplyForcesToObjects(5.0f, 10.0f, 5.0f);
+        ApplyForcesToObjects(2.5f, 10.0f, 5.0f);
 
         _loseZone.SetActive(false);
         _ballMoving.enabled = false;
@@ -79,6 +82,7 @@ public class BoxShaking : MonoBehaviour
     private void EnableLoseZone()
     {
         _loseZone.SetActive(true);
+        _rewardedButton.interactable = true;
     }    
 
     private void EnableBallMoving()

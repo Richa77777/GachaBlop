@@ -7,9 +7,15 @@ public class PlayerScore : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _scoreText;
     [SerializeField] private TextMeshProUGUI _recordScoreText;
+    [SerializeField] private TextMeshProUGUI _settingsRecordScoreText;
     [SerializeField] private TextMeshProUGUI _newRecordText;
 
     private int _playerScore = 0;
+
+    private void Start()
+    {
+        _settingsRecordScoreText.text = $"Ваш рекорд: {PlayerPrefs.GetInt("Record")}";
+    }
 
     private void OnEnable()
     {
@@ -52,5 +58,6 @@ public class PlayerScore : MonoBehaviour
         }
 
         _recordScoreText.text = $"Ваш рекорд: {PlayerPrefs.GetInt("Record")}";
+        _settingsRecordScoreText.text = $"Ваш рекорд: {PlayerPrefs.GetInt("Record")}";
     }
 }

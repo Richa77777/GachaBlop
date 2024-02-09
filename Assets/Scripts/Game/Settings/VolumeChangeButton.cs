@@ -16,6 +16,14 @@ public class VolumeChangeButton : MonoBehaviour
     {
         _image = GetComponent<Image>();
         GetComponent<Button>().onClick.AddListener(SwitchButtonState);
+
+        float value;
+        _audioMixer.GetFloat($"Volume_{_audioGroupName}", out value);
+
+        if (value == -80f)
+        {
+            _image.sprite = _onOffSprites[1];
+        }
     }
 
     private void SwitchButtonState()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class LoseZone : MonoBehaviour
@@ -18,16 +19,27 @@ public class LoseZone : MonoBehaviour
     [SerializeField] private float _lineBlinkDuration = 1f;
     [SerializeField] private float _loseAnimationsDuration = 0.5f;
 
+    [SerializeField] private AudioMixer _mixer;
+    [SerializeField] private AudioClip _loseSound;
+
+    private AudioMixerGroup _mixerGroup;
+    private AudioSource _audioSource;
     private Collider2D _collider;
     private SpriteRenderer _spriteRenderer;
     private Coroutine _lineBlinkCor;
     private Coroutine _endLineBlinkCor;
     private Coroutine _loseCor;
 
+    private bool _isLosed = false;
+
     private void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         _collider = GetComponent<Collider2D>();
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _mixerGroup = _mixer.FindMatchingGroups("Sounds")[0];
+        _audioSource.outputAudioMixerGroup = _mixerGroup;
     }
 
     private void Update()
@@ -58,8 +70,9 @@ public class LoseZone : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Ball"))
+        if (collision.CompareTag("Ball") && _isLosed == false)
         {
+            _isLosed = true;
             Lose();
         }
     }
@@ -73,6 +86,12 @@ public class LoseZone : MonoBehaviour
 
         _playerBallMoving.enabled = false;
         OnLose?.Invoke();
+
+        if (_audioSource.isPlaying == false)
+        {
+            _audioSource.clip = _loseSound;
+            _audioSource.Play();
+        }
     }
 
     private IEnumerator LoseCor()

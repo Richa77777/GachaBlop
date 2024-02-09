@@ -18,6 +18,7 @@ public class PlayerBallMoving : MonoBehaviour
     private float _minX = -1.3f;
     private float _maxX = 1.3f;
     private float _smoothMovingTime = 0.1f;
+    private float _moveSpeed = 10f; 
     private bool _firstStationary = true;
 
     private Vector2 _touchPosition;
@@ -106,8 +107,10 @@ public class PlayerBallMoving : MonoBehaviour
                             _smoothMovingCor = null;
                         }
 
-                        _currentBall.transform.position = new Vector3(Mathf.Clamp(targetPos.x, _minX, _maxX), _currentBall.transform.position.y, _currentBall.transform.position.z);
+                        Vector2 newPosition = new Vector2(Mathf.Clamp(targetPos.x, _minX, _maxX), _currentBall.transform.position.y);
+                        _currentBall.transform.position = Vector2.MoveTowards(_currentBall.transform.position, newPosition, _moveSpeed * Time.deltaTime);
                         break;
+
                     case TouchPhase.Ended:
                         _randomChoice.SpawnPos = targetPos;
                         _audioSource.PlayOneShot(_fallSound);

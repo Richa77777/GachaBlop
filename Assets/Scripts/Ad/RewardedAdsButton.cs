@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Advertisements;
 using UnityEngine.Events;
+using TMPro;
 
 public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
@@ -9,9 +10,11 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     [SerializeField] string _androidAdUnitId = "Rewarded_Android";
     [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
     [SerializeField] private UnityEvent _rewardEvent = new UnityEvent();
+    [SerializeField] private UnityEvent _failed = new UnityEvent();
     
     string _adUnitId = null; // This will remain null for unsupported platforms
-    
+
+    //[SerializeField] private TextMeshProUGUI _errorText;
 
     void Awake()
     {   
@@ -78,11 +81,15 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         Debug.Log($"Error loading Ad Unit {adUnitId}: {error.ToString()} - {message}");
         // Use the error details to determine whether to try to load another ad.
     }
- 
+
     public void OnUnityAdsShowFailure(string adUnitId, UnityAdsShowError error, string message)
     {
         Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
         // Use the error details to determine whether to try to load another ad.
+
+        _failed?.Invoke();
+        //_errorText.text = "Ошибка: " + $"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}";
+        LoadAd();
     }
  
     public void OnUnityAdsShowStart(string adUnitId) { }

@@ -1077,7 +1077,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: V1.2
+  m_text: V1.2.2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5367d8d2e90f55b4d8586f75fc4d3fb1, type: 2}
   m_sharedMaterial: {fileID: -5356110286969528330, guid: 5367d8d2e90f55b4d8586f75fc4d3fb1, type: 2}
@@ -1206,7 +1206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef998c21c00cefb4f9317cc06ea656ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _link: https://www.youtube.com/@milkachuu
+  _link: https://youtube.com/@StarlightParty?si=CsRgmLHaC8xBGPSW
 --- !u!114 &1701541430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1535,7 +1535,7 @@ Animator:
   m_GameObject: {fileID: 1831862150}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c1df64eddaafd17469ac3ff35845b0f3, type: 2}
+  m_Controller: {fileID: 9100000, guid: eaf5851c1d4c5f8429c7f5e384ad4905, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1571,6 +1571,8 @@ GameObject:
   - component: {fileID: 1862612466}
   - component: {fileID: 1862612465}
   - component: {fileID: 1862612468}
+  - component: {fileID: 1862612470}
+  - component: {fileID: 1862612469}
   m_Layer: 0
   m_Name: PlayButton
   m_TagString: Untagged
@@ -1587,7 +1589,7 @@ RectTransform:
   m_GameObject: {fileID: 1862612463}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 192, y: 192, z: 192}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 848749375}
@@ -1596,7 +1598,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 455}
-  m_SizeDelta: {x: 4.21, y: 1.3599854}
+  m_SizeDelta: {x: 808.32, y: 261.11713}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1862612465
 MonoBehaviour:
@@ -1617,7 +1619,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 3
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -1663,7 +1665,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: FadeIn
+          m_StringArgument: FadeInInMenu
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1862612465}
@@ -1726,7 +1728,7 @@ Animator:
   m_GameObject: {fileID: 1862612463}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c1df64eddaafd17469ac3ff35845b0f3, type: 2}
+  m_Controller: {fileID: 9100000, guid: c9a8b9e1b58e10f479473bf32563025e, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1737,6 +1739,116 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1862612469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862612463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2477a652d54fa54b8a6b35b4393ff0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clickSound: {fileID: 8300000, guid: b9b1e17851d8e1f419278cf710a6279b, type: 3}
+  _mixer: {fileID: 24100000, guid: b5c9f65e8e80ea24f8ab30cb669cfbe4, type: 2}
+--- !u!82 &1862612470
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1862612463}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -7104195350908738951, guid: b5c9f65e8e80ea24f8ab30cb669cfbe4, type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1894800021
 GameObject:
   m_ObjectHideFlags: 0
